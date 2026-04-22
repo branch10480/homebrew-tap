@@ -7,6 +7,12 @@ class MarkdownobserverFork < Formula
   depends_on xcode: ["15.0", :build]
   depends_on :macos
 
+  # Use the standard system environment so xcodebuild's internal tooling
+  # (SwiftPM resolver, sandbox-exec invocations, Xcode's own shims) can see
+  # a normal PATH / HOME / TMPDIR. Homebrew's default superenv strips too
+  # much for Xcode-based builds to succeed.
+  env :std
+
   def install
     xcodebuild "-project", "minimark.xcodeproj",
                "-scheme", "minimark",
