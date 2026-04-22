@@ -8,19 +8,18 @@ class MarkdownobserverFork < Formula
   depends_on :macos
 
   def install
-    system "xcodebuild",
-      "-project", "minimark.xcodeproj",
-      "-scheme", "minimark",
-      "-configuration", "Release",
-      "-destination", "platform=macOS",
-      "-derivedDataPath", "build",
-      "APP_BUNDLE_IDENTIFIER=com.github.branch10480.markdownobserver.fork",
-      "TESTS_BUNDLE_IDENTIFIER=com.github.branch10480.markdownobserver.fork.tests",
-      "UITESTS_BUNDLE_IDENTIFIER=com.github.branch10480.markdownobserver.fork.uitests",
-      "CODE_SIGN_IDENTITY=",
-      "CODE_SIGNING_REQUIRED=NO",
-      "CODE_SIGNING_ALLOWED=NO",
-      "build"
+    xcodebuild "-project", "minimark.xcodeproj",
+               "-scheme", "minimark",
+               "-configuration", "Release",
+               "-destination", "platform=macOS",
+               "-derivedDataPath", "build",
+               "APP_BUNDLE_IDENTIFIER=com.github.branch10480.markdownobserver.fork",
+               "TESTS_BUNDLE_IDENTIFIER=com.github.branch10480.markdownobserver.fork.tests",
+               "UITESTS_BUNDLE_IDENTIFIER=com.github.branch10480.markdownobserver.fork.uitests",
+               "CODE_SIGN_IDENTITY=",
+               "CODE_SIGNING_REQUIRED=NO",
+               "CODE_SIGNING_ALLOWED=NO",
+               "build"
 
     prefix.install "build/Build/Products/Release/MarkdownObserver.app"
   end
@@ -45,6 +44,6 @@ class MarkdownobserverFork < Formula
   end
 
   test do
-    assert_predicate prefix/"MarkdownObserver.app/Contents/MacOS/MarkdownObserver", :exist?
+    assert_path_exists prefix/"MarkdownObserver.app/Contents/MacOS/MarkdownObserver"
   end
 end
