@@ -19,6 +19,8 @@ class MarkdownobserverFork < Formula
                "-configuration", "Release",
                "-destination", "platform=macOS",
                "-derivedDataPath", "build",
+               "-skipPackagePluginValidation",
+               "-skipMacroValidation",
                "APP_BUNDLE_IDENTIFIER=com.github.branch10480.markdownobserver.fork",
                "TESTS_BUNDLE_IDENTIFIER=com.github.branch10480.markdownobserver.fork.tests",
                "UITESTS_BUNDLE_IDENTIFIER=com.github.branch10480.markdownobserver.fork.uitests",
