@@ -1,0 +1,50 @@
+class MarkdownobserverFork < Formula
+  desc "Native macOS Markdown viewer (branch10480 personal fork of MarkdownObserver)"
+  homepage "https://github.com/branch10480/markdownobserver"
+  license "MIT"
+  head "https://github.com/branch10480/markdownobserver.git", branch: "feature/custom-css-webview-renderer"
+
+  depends_on xcode: ["15.0", :build]
+  depends_on :macos
+
+  def install
+    system "xcodebuild",
+      "-project", "minimark.xcodeproj",
+      "-scheme", "minimark",
+      "-configuration", "Release",
+      "-destination", "platform=macOS",
+      "-derivedDataPath", "build",
+      "APP_BUNDLE_IDENTIFIER=com.github.branch10480.markdownobserver.fork",
+      "TESTS_BUNDLE_IDENTIFIER=com.github.branch10480.markdownobserver.fork.tests",
+      "UITESTS_BUNDLE_IDENTIFIER=com.github.branch10480.markdownobserver.fork.uitests",
+      "CODE_SIGN_IDENTITY=",
+      "CODE_SIGNING_REQUIRED=NO",
+      "CODE_SIGNING_ALLOWED=NO",
+      "build"
+
+    prefix.install "build/Build/Products/Release/MarkdownObserver.app"
+  end
+
+  def caveats
+    <<~EOS
+      MarkdownObserver.app has been installed to:
+        #{opt_prefix}/MarkdownObserver.app
+
+      Quick launch (add to ~/.zshrc):
+        alias mdo='open -a "#{opt_prefix}/MarkdownObserver.app"'
+
+      To have Finder recognise it as a normal app, symlink into /Applications/:
+        ln -s "#{opt_prefix}/MarkdownObserver.app" "/Applications/MarkdownObserver-Fork.app"
+
+      Customize rendering by editing:
+        ~/Library/Application Support/MarkdownObserver/themes/user.css
+
+      Upgrade to the latest feature branch HEAD:
+        brew upgrade --fetch-HEAD markdownobserver-fork
+    EOS
+  end
+
+  test do
+    assert_predicate prefix/"MarkdownObserver.app/Contents/MacOS/MarkdownObserver", :exist?
+  end
+end
