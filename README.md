@@ -16,11 +16,13 @@ Native macOS Markdown viewer — my personal fork of [larspohlmann/markdownobser
 
 ```bash
 # Install from the current HEAD of the fork's feature branch (source build)
-brew install --HEAD branch10480/tap/markdownobserver-fork
+HOMEBREW_NO_SANDBOX=1 brew install --HEAD branch10480/tap/markdownobserver-fork
 
 # Upgrade later to pick up new commits on the tracked branch
-brew upgrade --fetch-HEAD markdownobserver-fork
+HOMEBREW_NO_SANDBOX=1 brew upgrade --fetch-HEAD markdownobserver-fork
 ```
+
+`HOMEBREW_NO_SANDBOX=1` is required because xcodebuild's Swift Package Manager resolution uses `sandbox-exec` internally and cannot nest inside Homebrew's own sandbox. This is a limitation of every Homebrew formula that source-builds an Xcode project with SPM dependencies.
 
 Xcode 15+ is required at install time because the formula runs `xcodebuild` locally — no Apple Developer ID or notarization needed since the binary never leaves your machine.
 

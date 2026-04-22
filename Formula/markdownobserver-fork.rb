@@ -39,7 +39,11 @@ class MarkdownobserverFork < Formula
         ~/Library/Application Support/MarkdownObserver/themes/user.css
 
       Upgrade to the latest feature branch HEAD:
-        brew upgrade --fetch-HEAD markdownobserver-fork
+        HOMEBREW_NO_SANDBOX=1 brew upgrade --fetch-HEAD markdownobserver-fork
+
+      NOTE: installs MUST be run with HOMEBREW_NO_SANDBOX=1 because
+      xcodebuild's internal Swift Package Manager resolution invokes
+      sandbox-exec and cannot nest inside Homebrew's own sandbox.
     EOS
   end
 
