@@ -2,7 +2,7 @@ class MarkdownobserverFork < Formula
   desc "Native macOS Markdown viewer (branch10480 personal fork of MarkdownObserver)"
   homepage "https://github.com/branch10480/markdownobserver"
   license "MIT"
-  head "https://github.com/branch10480/markdownobserver.git", branch: "feature/custom-css-webview-renderer"
+  head "https://github.com/branch10480/markdownobserver.git", branch: "develop"
 
   depends_on xcode: ["15.0", :build]
   depends_on :macos
@@ -21,6 +21,9 @@ class MarkdownobserverFork < Formula
                "-derivedDataPath", "build",
                "-skipPackagePluginValidation",
                "-skipMacroValidation",
+               "IDEPackageSupportDisableManifestSandbox=YES",
+               "IDEPackageSupportDisablePluginExecutionSandbox=YES",
+               "OTHER_SWIFT_FLAGS=$(inherited) -disable-sandbox",
                "APP_BUNDLE_IDENTIFIER=com.github.branch10480.markdownobserver.fork",
                "TESTS_BUNDLE_IDENTIFIER=com.github.branch10480.markdownobserver.fork.tests",
                "UITESTS_BUNDLE_IDENTIFIER=com.github.branch10480.markdownobserver.fork.uitests",
@@ -47,11 +50,11 @@ class MarkdownobserverFork < Formula
         ~/Library/Application Support/MarkdownObserver/themes/user.css
 
       Upgrade to the latest feature branch HEAD:
-        HOMEBREW_NO_SANDBOX=1 brew upgrade --fetch-HEAD markdownobserver-fork
+        brew upgrade --fetch-HEAD markdownobserver-fork
 
-      NOTE: installs MUST be run with HOMEBREW_NO_SANDBOX=1 because
-      xcodebuild's internal Swift Package Manager resolution invokes
-      sandbox-exec and cannot nest inside Homebrew's own sandbox.
+      If the build fails with "sandbox_apply: Operation not permitted",
+      disable Homebrew's outer sandbox as a fallback:
+        HOMEBREW_NO_SANDBOX=1 brew install --HEAD markdownobserver-fork
     EOS
   end
 
